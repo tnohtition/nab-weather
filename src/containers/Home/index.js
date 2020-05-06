@@ -1,5 +1,5 @@
 import React from 'react';
-import Search from 'containers/Search';
+import SearchForm from 'containers/SearchForm';
 import { Container, Row, Col, Jumbotron } from 'react-bootstrap';
 
 const Home = () => {
@@ -8,7 +8,7 @@ const Home = () => {
       <Col>
         <Jumbotron>
           <Container>
-            <Search />
+            <SearchForm />
           </Container>
         </Jumbotron>
       </Col>
