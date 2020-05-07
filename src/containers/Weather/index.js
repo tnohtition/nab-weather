@@ -2,7 +2,7 @@ import React from 'react';
 import { Row, Col, Card } from 'react-bootstrap';
 
 const Weather = () => {
-  return <Row className='bg-white p-5'>
+  return <Row className=''>
     <Col>
       <Card>
         <Card.Body>Monday</Card.Body>

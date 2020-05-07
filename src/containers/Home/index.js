@@ -8,7 +8,6 @@ const Home = () => {
     <Row>
       <Col>
         <Jumbotron>
-          <Container>
             <Row className="mb-2">
               <Col>
                 <SearchForm />
@@ -19,7 +18,6 @@ const Home = () => {
                 <Weather />
               </Col>
             </Row>
-          </Container>
         </Jumbotron>
       </Col>
     </Row>
