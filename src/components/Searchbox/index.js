@@ -1,17 +1,19 @@
 import React from 'react';
-import { FormControl, InputGroup } from 'react-bootstrap';
+import { Form, InputGroup } from 'react-bootstrap';
 import SearchOutlinedIcon from '@material-ui/icons/SearchOutlined';
 
-const Searchbox = ({placeholder = 'Search'}) => {
+const Searchbox = ({placeholder = 'Search (and hit `Enter`)', name, disabled}) => {
   return <InputGroup>
     <InputGroup.Prepend
-      className="align-items-center bg-white pl-2"
-    >
+      className="align-items-center bg-white pl-2">
       <SearchOutlinedIcon />
     </InputGroup.Prepend>
-    <FormControl
+    <Form.Control
+      disabled={disabled}
       className="border-0 rounded-0"
-      type="text" placeholder={placeholder}
+      type="text"
+      name={name}
+      placeholder={placeholder}
     />
   </InputGroup>
 }

@@ -1,33 +1,22 @@
 import React from 'react';
 import { Row, Col, Card } from 'react-bootstrap';
+import WeatherCard from 'containers/WeatherCard';
 
-const Weather = () => {
-  return <Row className=''>
-    <Col>
-      <Card>
-        <Card.Body>Monday</Card.Body>
-      </Card>
+const Weather = ({woeid}) => {
+  const ranges = (size = 5) => {
+    return (new Array(size)).fill(null).map((item, idx) => {
+      const now = new Date();
+      return now.setDate(now.getDate() + idx);
+    });
+  }
+  const weatherCardEles = ranges().map(d => {
+    const date = new Date(d);
+    return <Col key={date.getDay()}>
+      <WeatherCard date={date} woeid={woeid}/>
     </Col>
-    <Col>
-      <Card>
-        <Card.Body>Tuesday</Card.Body>
-      </Card>
-    </Col>
-    <Col>
-      <Card>
-        <Card.Body>Wednesday</Card.Body>
-      </Card>
-    </Col>
-    <Col>
-      <Card>
-        <Card.Body>Thurday</Card.Body>
-      </Card>
-    </Col>
-    <Col>
-      <Card>
-        <Card.Body>Friday</Card.Body>
-      </Card>
-    </Col>
+  });
+  return <Row>
+    {weatherCardEles}
   </Row>;
 }
 
