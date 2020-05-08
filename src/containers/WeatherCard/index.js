@@ -1,5 +1,4 @@
 import React, {useEffect, useReducer} from 'react';
-import axios from 'axios';
 import { Card } from 'react-bootstrap';
 import Temperature from 'components/Temperature';
 import NotFound from 'components/NotFound';
@@ -11,9 +10,7 @@ import {
   fetchDayWeatherSuccess,
   fetchDayWeatherError,
 } from './actions';
-
-const endpoint = `https://www.metaweather.com/api/location`;
-const corsEndpoint = `https://cors-anywhere.herokuapp.com/`;
+import MetaweatherService from 'services/MetaweatherService';
 
 const WeatherCard = ({date, woeid}) => {
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -21,14 +18,8 @@ const WeatherCard = ({date, woeid}) => {
     const reqDayWeather = async (woeid, date) => {
       dispatch(fetchDayWeather());
       try {
-        //https://www.metaweather.com/api/location/1252431/2020/5/7/
-        const endpointBuilder = `${endpoint}/${woeid}/${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`
-        const url = `${corsEndpoint}${endpointBuilder}`
-        const res = await axios.get(url, {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
+        const service = new MetaweatherService(woeid, date);
+        const res = await service.get();
         const {data = []} = res;
 
         dispatch(fetchDayWeatherSuccess(data));
@@ -40,7 +31,7 @@ const WeatherCard = ({date, woeid}) => {
     if (woeid) {
       reqDayWeather(woeid, date);
     }
-  }, [woeid]);
+  }, [woeid, date]);
 
   const {weather, fetching} = state;
   let temperatureEle = null;

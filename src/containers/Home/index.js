@@ -1,6 +1,5 @@
 import React, {useReducer, useEffect, useState} from 'react';
 import { Container, Row, Col, Jumbotron } from 'react-bootstrap';
-import axios from 'axios';
 import SearchForm from 'containers/SearchForm';
 import Weather from 'containers/Weather';
 import Location from 'components/Location';
@@ -11,9 +10,7 @@ import {
   fetchLocationSuccess,
   fetchLocationError,
 } from './actions';
-
-const endpoint = `https://www.metaweather.com/api/location/search`;
-const corsEndpoint = `https://cors-anywhere.herokuapp.com/`;
+import MetaweatherLocationSearcherService from 'services/MetaweatherLocationSearcherService';
 
 const Home = () => {
   const [formData, setFormData] = useState({});
@@ -28,16 +25,11 @@ const Home = () => {
     const reqLocation = async (query = '') => {
       dispatch(fetchLocation());
       try {
-        const url = `${corsEndpoint}${endpoint}`
         const params = {
           query,
         }
-        const res = await axios.get(url, {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          params,
-        });
+        const service = new MetaweatherLocationSearcherService();
+        const res = await service.get(params);
         const {data} = res;
         const location = data.length ? data[0] : {woeid: -1};
 
