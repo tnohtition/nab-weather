@@ -11,9 +11,7 @@ const buildRange = (size = 5) => {
 const defaultRange = buildRange();
 
 const Weather = ({ woeid }) => {
-  const [range] = useState(defaultRange);
-
-  const weatherCardEles = range.map(date => {
+  const weatherCardEles = defaultRange.map(date => {
     return <Col key={date.getDay()}>
       <WeatherCard date={date} woeid={woeid}/>
     </Col>
