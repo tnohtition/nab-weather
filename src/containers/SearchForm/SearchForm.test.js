@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow, mount } from 'enzyme';
+import { shallow } from 'enzyme';
 import SearchForm from './index';
 import Searchbox from 'components/Searchbox';
 
@@ -16,16 +16,14 @@ describe('SearchForm containers', () => {
 
   it('should onSubmit', () => {
     const onSubmit = jest.fn();
-    const searchForm = mount(<SearchForm onSubmit={onSubmit} />);
+    const searchForm = shallow(<SearchForm onSubmit={onSubmit} />);
 
-    // input search
-    const search = 'ho chi minh';
-    const searchInput = searchForm.find('input');
-    searchInput.simulate('change', { target: { value: search } });
-
-    // submit
-    const form = searchForm.find('form');
-    form.simulate('submit', { target: { search: search } });
+    const form = searchForm.find('Form');
+    const preventDefault = jest.fn();
+    form.simulate('submit', {
+      preventDefault,
+      target: { search: 'ho chi minh' }
+    });
 
     expect(onSubmit).toBeCalled();
   });
