@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Location = ({city, lattLong, woeid}) => {
+const Location = ({city, woeid}) => {
   return <div>
     <span>City: {city}</span>
     <span> - </span>
