@@ -14,4 +14,9 @@ describe('Home containers', () => {
     const home = shallow(<Home />);
     expect(home.containsMatchingElement(<Weather />)).toEqual(true);
   });
+
+  it('should handleSubmit', () => {
+    const home = shallow(<Home />);
+    home.find('SearchForm').prop('onSubmit')({search: 'ho chi minh'});
+  });
 });
