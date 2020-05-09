@@ -31,7 +31,7 @@ const Home = () => {
         const service = new MetaweatherLocationSearcherService();
         const res = await service.get(params);
         const {data} = res;
-        const location = data.length ? data[0] : {woeid: -1};
+        const location = data.length ? data[0] : {};
 
         dispatch(fetchLocationSuccess(location));
       } catch (e) {
@@ -49,11 +49,11 @@ const Home = () => {
   let woeid = 0;
   if (location) {
     const {title, latt_long} = location;
-    woeid = location.woeid;
+    woeid = location.woeid || 0;
     locationEle = <Row className="mb-2">
       <Col>
         {
-          (woeid !== -1) ? <Location
+          woeid ? <Location
             city={title}
             lattLong={latt_long}
             woeid={woeid}

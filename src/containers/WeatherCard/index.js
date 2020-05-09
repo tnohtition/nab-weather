@@ -28,14 +28,14 @@ const WeatherCard = ({date, woeid}) => {
       }
     }
 
-    if (woeid && woeid !== -1) {
+    if (woeid) {
       reqDayWeather(woeid, date);
     }
   }, [woeid, date]);
 
   const {weather, fetching} = state;
   let temperatureEle = null;
-  if (!woeid || woeid === -1) {
+  if (!woeid) {
     temperatureEle = null;
   }
   else if (weather && !weather.length) {
