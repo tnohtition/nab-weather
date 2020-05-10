@@ -1,4 +1,4 @@
-import React, {useEffect, useReducer} from 'react';
+import React, {useEffect} from 'react';
 import { Card } from 'react-bootstrap';
 import Temperature from 'components/Temperature';
 import NotFound from 'components/NotFound';
@@ -11,11 +11,12 @@ import {
   fetchDayWeatherError,
 } from './actions';
 import MetaweatherService from 'services/MetaweatherService';
+import withReducer from 'utils/withReducer';
 
-const WeatherCard = ({date, woeid}) => {
-  const [state, dispatch] = useReducer(reducer, initialState);
+export const WeatherCard = ({ date = new Date(), woeid, weather, fetching, dispatch }) => {
   useEffect(() => {
-    const reqDayWeather = async (woeid, date) => {
+    // minic the mapDispatchToProps
+    const onFetchDayWeather = async (woeid, date) => {
       dispatch(fetchDayWeather());
       try {
         const service = new MetaweatherService(woeid, date);
@@ -29,11 +30,10 @@ const WeatherCard = ({date, woeid}) => {
     }
 
     if (woeid) {
-      reqDayWeather(woeid, date);
+      onFetchDayWeather(woeid, date);
     }
-  }, [woeid, date]);
+  }, [woeid, date, dispatch]);
 
-  const {weather, fetching} = state;
   let temperatureEle = null;
   if (!woeid) {
     temperatureEle = null;
@@ -42,6 +42,7 @@ const WeatherCard = ({date, woeid}) => {
     temperatureEle = <NotFound />;
   }
   else if (weather && weather.length) {
+    // Apply the average rule for temperture
     const summary = weather.reduce((acc, item) => {
       const {max_temp, min_temp} = item;
       acc.max += max_temp;
@@ -64,4 +65,4 @@ const WeatherCard = ({date, woeid}) => {
   </Card>;
 }
 
-export default WeatherCard;
+export default withReducer(WeatherCard, reducer, initialState);
