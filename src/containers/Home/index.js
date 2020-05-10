@@ -1,4 +1,4 @@
-import React, {useReducer, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import { Container, Row, Col, Jumbotron } from 'react-bootstrap';
 import SearchForm from 'containers/SearchForm';
 import Weather from 'containers/Weather';
@@ -11,18 +11,18 @@ import {
   fetchLocationError,
 } from './actions';
 import MetaweatherLocationSearcherService from 'services/MetaweatherLocationSearcherService';
+import withReducer from 'utils/withReducer';
 
-const Home = () => {
+export const Home = ({ location, fetching, dispatch }) => {
   const [formData, setFormData] = useState({});
   const handleSubmit = formData => {
     setFormData(formData);
   }
-
   const {search = ''} = formData;
 
-  const [state, dispatch] = useReducer(reducer, initialState);
   useEffect(() => {
-    const reqLocation = async (query = '') => {
+    // minic the mapDispatchToProps
+    const onFetchLocation = async (query = '') => {
       dispatch(fetchLocation());
       try {
         const params = {
@@ -30,21 +30,20 @@ const Home = () => {
         }
         const service = new MetaweatherLocationSearcherService();
         const res = await service.get(params);
-        const {data} = res;
-        const location = data.length ? data[0] : {};
+        const { data } = res;
+        const found = data.length ? data[0] : {};
 
-        dispatch(fetchLocationSuccess(location));
+        dispatch(fetchLocationSuccess(found));
       } catch (e) {
         dispatch(fetchLocationError(e));
       }
     }
 
     if (search) {
-      reqLocation(search);
+      onFetchLocation(search);
     }
-  }, [search]);
+  }, [search, dispatch]);
 
-  const {location, fetching} = state;
   let locationEle = null;
   let woeid = 0;
   if (location) {
@@ -84,4 +83,4 @@ const Home = () => {
   </Container>;
 }
 
-export default Home;
+export default withReducer(Home, reducer, initialState);
